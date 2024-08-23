@@ -1,0 +1,123 @@
+/* Criminal justice theme styles */
+:root {
+  --color-primary: #2c3e50;
+  --color-secondary: #34495e;
+  --color-accent: #3498db;
+  --color-text: #ecf0f1;
+  --color-background: #f4f4f4;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: var(--color-background);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  flex: 1;
+}
+header {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  text-align: center;
+  padding: 1rem;
+}
+h1,
+h2 {
+  color: var(--color-secondary);
+}
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: var(--color-accent);
+  color: var(--color-text);
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.btn:hover {
+  background-color: #2980b9;
+}
+#quizContainer,
+#results {
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.answer-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+  background-color: #ecf0f1;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.answer-btn.correct {
+  background-color: #2ecc71;
+  color: white;
+}
+.answer-btn.incorrect {
+  background-color: #e74c3c;
+  color: white;
+}
+.answer-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.answer-btn:hover {
+  background-color: #d5dbdb;
+}
+#results {
+  text-align: center;
+}
+footer {
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+}
+.progress-bar {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+.progress {
+  width: 0;
+  height: 10px;
+  background-color: #2ecc71;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+#scoreChart {
+  max-width: 300px;
+  margin: 20px auto;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+  }
+
+  #quizContainer,
+  #results {
+    padding: 1rem;
+  }
+}

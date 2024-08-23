@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fourth Amendment & Modern Technology Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Fourth Amendment & Modern Technology Quiz</h1>
+    </header>
+
+    <div class="container">
+        <div id="intro">
+            <h2>Test Your Knowledge</h2>
+            <p>This quiz covers the impact of modern technology on Fourth Amendment protections. Good luck!</p>
+            <button id="startQuiz" class="btn">Start Quiz</button>
+        </div>
+
+        <div id="quizContainer" style="display:none;">
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+            <h2 id="questionNumber"></h2>
+            <p id="questionText"></p>
+            <div id="answerButtons"></div>
+            <button id="nextButton" class="btn" style="display:none;">Next Question</button>
+        </div>
+
+        <div id="results" style="display:none;">
+            <h2>Quiz Completed!</h2>
+            <p>Your score: <span id="score"></span> out of 25</p>
+            <div id="scoreChart"></div>
+            <button id="retakeQuiz" class="btn">Retake Quiz</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Fourth Amendment & Technology Quiz. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const startQuizBtn = document.getElementById('startQuiz');
+        const quizContainer = document.getElementById('quizContainer');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const answerButtons = document.getElementById('answerButtons');
+        const nextButton = document.getElementById('nextButton');
+        const results = document.getElementById('results');
+        const scoreElement = document.getElementById('score');
+        const retakeQuizBtn = document.getElementById('retakeQuiz');
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        const quizData = [
+            
+            {
+                question: "What Supreme Court case established that the government's use of a GPS tracking device on a vehicle constitutes a search under the Fourth Amendment?",
+                answers: [
+                    "United States v. Jones (2012)",
+                    "Riley v. California (2014)",
+                    "Carpenter v. United States (2018)",
+                    "Kyllo v. United States (2001)"
+                ],
+                correct: 0
+            },
+            {
+                question: "How did the Riley v. California case change the way law enforcement can search cell phones incident to arrest?",
+                answers: [
+                    "It allowed unlimited searches of cell phones during arrests",
+                    "It prohibited all searches of cell phones during arrests",
+                    "It required a warrant to search the contents of a cell phone seized during an arrest",
+                    "It allowed searches of cell phones only for violent crimes"
+                ],
+                correct: 2
+            },
+            {
+                question: "What is the 'third-party doctrine' and how has it been challenged by modern technology?",
+                answers: [
+                    "It allows third parties to conduct searches on behalf of the government",
+                    "It states individuals have no reasonable expectation of privacy in information voluntarily disclosed to third parties",
+                    "It requires third-party authorization for all searches",
+                    "It prohibits the use of third-party technology in searches"
+                ],
+                correct: 1
+            },
+            {
+                question: "How did the Carpenter v. United States decision impact the government's ability to obtain cell-site location information?",
+                answers: [
+                    "It allowed unrestricted access to cell-site location information",
+                    "It prohibited all access to cell-site location information",
+                    "It required a warrant to access cell-site location information from wireless carriers",
+                    "It allowed access only with the cell phone owner's permission"
+                ],
+                correct: 2
+            },
+            {
+                question: "What is the 'mosaic theory' in relation to Fourth Amendment protections and modern surveillance?",
+                answers: [
+                    "A theory that individual pieces of surveillance data are protected",
+                    "A theory that only complete surveillance pictures violate privacy",
+                    "A theory that aggregating multiple instances of surveillance over time could violate Fourth Amendment protections",
+                    "A theory that modern surveillance techniques are too complex to be regulated"
+                ],
+                correct: 2
+            },
+            {
+                question: "How has cloud storage complicated traditional search and seizure laws?",
+                answers: [
+                    "It has simplified data retrieval for law enforcement",
+                    "It has made all cloud-stored data public",
+                    "It has blurred jurisdictional lines and raised questions about the scope of search warrants",
+                    "It has made data immune to search and seizure"
+                ],
+                correct: 2
+            },
+            {
+                question: "What is the 'plain view doctrine' and how has digital evidence challenged its application?",
+                answers: [
+                    "It allows seizure of evidence in plain sight; digital devices contain vast amounts of data not immediately visible",
+                    "It prohibits the use of visual evidence in court",
+                    "It requires all evidence to be in plain sight to be admissible",
+                    "It only applies to physical objects, not digital data"
+                ],
+                correct: 0
+            },
+            {
+                question: "How has the use of facial recognition technology by law enforcement raised Fourth Amendment concerns?",
+                answers: [
+                    "It has made identification too accurate to be fair",
+                    "It has raised concerns about mass surveillance and privacy violations in public spaces",
+                    "It has eliminated the need for warrants entirely",
+                    "It has made all public spaces private"
+                ],
+                correct: 1
+            },
+            {
+                question: "What is the 'border search exception' and how has it been applied to electronic devices?",
+                answers: [
+                    "It prohibits all searches at borders",
+                    "It allows unlimited searches of all items at borders",
+                    "It allows warrantless searches at international borders, with some courts requiring reasonable suspicion for forensic searches of electronic devices",
+                    "It only applies to physical goods, not electronic devices"
+                ],
+                correct: 2
+            },
+            {
+                question: "How has the use of stingray devices (cell-site simulators) by law enforcement affected Fourth Amendment protections?",
+                answers: [
+                    "It has strengthened privacy protections",
+                    "It has raised concerns about warrantless mass surveillance and privacy violations",
+                    "It has been deemed unconstitutional in all cases",
+                    "It has been fully approved by the Supreme Court"
+                ],
+                correct: 1
+            },
+            {
+                question: "What is the 'private search doctrine' and how has it been applied to digital evidence?",
+                answers: [
+                    "It prohibits private individuals from conducting searches",
+                    "It allows law enforcement to repeat a search previously conducted by a private party without a warrant",
+                    "It requires all digital searches to be conducted privately",
+                    "It only applies to physical searches, not digital ones"
+                ],
+                correct: 1
+            },
+            {
+                question: "How has the use of smart home devices complicated search and seizure laws?",
+                answers: [
+                    "It has simplified home searches",
+                    "It has made all home data public",
+                    "It has raised questions about privacy expectations in the home and the potential for these devices to be used as evidence or for surveillance",
+                    "It has made homes immune to searches"
+                ],
+                correct: 2
+            },
+            {
+                question: "What is a 'geofence warrant' and how has it challenged traditional Fourth Amendment protections?",
+                answers: [
+                    "It's a warrant that only applies to geographic boundaries",
+                    "It allows police to obtain data on all devices within a specific area and time frame, raising concerns about overbroad searches",
+                    "It prohibits the use of GPS data in investigations",
+                    "It requires police to physically fence off an area before searching"
+                ],
+                correct: 1
+            },
+            {
+                question: "How has encryption technology impacted law enforcement's ability to execute search warrants on digital devices?",
+                answers: [
+                    "It has made all digital evidence easily accessible",
+                    "It has completely prevented law enforcement from accessing any digital data",
+                    "It has made it more difficult to access data on seized devices, leading to debates about mandatory backdoors",
+                    "It has had no impact on digital searches"
+                ],
+                correct: 2
+            },
+            {
+                question: "What is the 'exigent circumstances' exception and how has it been applied to digital evidence?",
+                answers: [
+                    "It allows warrantless searches in all digital cases",
+                    "It prohibits any urgent searches of digital devices",
+                    "It allows warrantless searches in emergencies, with controversial applications to potential remote wiping of devices",
+                    "It only applies to physical emergencies, not digital ones"
+                ],
+                correct: 2
+            },
+            {
+                question: "How has social media content complicated the application of search and seizure laws?",
+                answers: [
+                    "It has simplified privacy expectations",
+                    "It has made all social media content public domain",
+                    "It has raised questions about reasonable expectations of privacy in shared content and the scope of warrants for social media accounts",
+                    "It has made social media immune to searches"
+                ],
+                correct: 2
+            },
+            {
+                question: "What is the 'third-party consent' doctrine and how has it been applied to shared digital spaces?",
+                answers: [
+                    "It requires consent from a third party for all searches",
+                    "It allows someone with common authority over a space to consent to a search, with complex applications to shared digital spaces",
+                    "It prohibits searches of any shared spaces",
+                    "It only applies to physical spaces, not digital ones"
+                ],
+                correct: 1
+            },
+            {
+                question: "How has the proliferation of IoT (Internet of Things) devices affected Fourth Amendment protections?",
+                answers: [
+                    "It has strengthened privacy protections in all areas",
+                    "It has eliminated the need for Fourth Amendment protections",
+                    "It has created new avenues for data collection and potential surveillance, challenging traditional notions of privacy",
+                    "It has had no impact on Fourth Amendment protections"
+                ],
+                correct: 2
+            },
+            {
+                question: "What is 'digital exhaust' and how has it impacted Fourth Amendment jurisprudence?",
+                answers: [
+                    "It refers to harmful emissions from digital devices",
+                    "It refers to outdated digital data that's automatically deleted",
+                    "It refers to data trails left by digital activities, raising questions about privacy expectations in aggregate data",
+                    "It refers to the heat generated by computer processors"
+                ],
+                correct: 2
+            },
+            {
+                question: "How has the use of predictive policing algorithms challenged traditional notions of individualized suspicion under the Fourth Amendment?",
+                answers: [
+                    "It has eliminated the need for individualized suspicion",
+                    "It has strengthened the requirement for individualized suspicion",
+                    "It has raised concerns about the basis for reasonable suspicion and potential bias in law enforcement actions",
+                    "It has had no impact on the concept of individualized suspicion"
+                ],
+                correct: 2
+            },
+            {
+                question: "How has GPS tracking technology evolved since the United States v. Jones decision, and what new Fourth Amendment challenges has this posed?",
+                answers: [
+                    "GPS technology hasn't changed since the Jones decision",
+                    "GPS tracking is now less precise, posing fewer challenges",
+                    "GPS tracking has become more precise and integrated into various devices, raising questions about the duration and comprehensiveness of tracking that may constitute a search",
+                    "The Jones decision made all GPS tracking unconstitutional"
+                ],
+                correct: 2
+            },
+            {
+                question: "What are the implications of the Carpenter v. United States decision for other types of cell phone data beyond cell-site location information?",
+                answers: [
+                    "The decision only applies to cell-site location information",
+                    "The decision made all cell phone data freely accessible to law enforcement",
+                    "The decision has led to debates about whether other types of cell phone data, such as app usage or web browsing history, should receive similar Fourth Amendment protections",
+                    "The decision prohibited the use of any cell phone data in investigations"
+                ],
+                correct: 2
+            },
+            {
+                question: "How have lower courts interpreted and applied the Carpenter decision to different types of cell-site data and tracking technologies?",
+                answers: [
+                    "All lower courts have interpreted Carpenter exactly the same way",
+                    "Lower courts have ignored the Carpenter decision entirely",
+                    "Lower courts have grappled with applying Carpenter to various scenarios, including real-time cell-site location information and tower dumps",
+                    "Lower courts have universally expanded Carpenter to cover all forms of digital data"
+                ],
+                correct: 2
+            },
+            {
+                question: "What legal standards have been proposed or adopted for law enforcement's use of facial recognition technology in public spaces?",
+                answers: [
+                    "A universal ban on all facial recognition technology",
+                    "Unrestricted use of facial recognition technology by law enforcement",
+                    "Various standards ranging from requiring warrants to allowing use with fewer restrictions, with some jurisdictions enacting laws requiring judicial authorization or limiting use",
+                    "Mandatory use of facial recognition technology in all public spaces"
+                ],
+                correct: 2
+            },
+            {
+                question: "How does the use of facial recognition technology in conjunction with other surveillance methods complicate Fourth Amendment analyses?",
+                answers: [
+                    "It simplifies Fourth Amendment analyses by providing clearer evidence",
+                    "It has no impact on Fourth Amendment analyses",
+                    "It creates more comprehensive tracking capabilities, potentially constituting a 'mosaic' that infringes on reasonable expectations of privacy",
+                    "It eliminates the need for Fourth Amendment analyses entirely"
+                ],
+                correct: 2
+            }
+        ];
+
+        function startQuiz() {
+            document.getElementById('intro').style.display = 'none';
+            quizContainer.style.display = 'block';
+            results.style.display = 'none';
+            currentQuestion = 0;
+            score = 0;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            let question = quizData[currentQuestion];
+            questionNumber.innerHTML = `Question ${currentQuestion + 1} of ${quizData.length}`;
+            questionText.innerHTML = question.question;
+
+            question.answers.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.innerHTML = answer;
+                button.classList.add('answer-btn');
+                answerButtons.appendChild(button);
+                button.addEventListener('click', () => selectAnswer(index));
+            });
+
+            updateProgressBar();
+        }
+
+        function resetState() {
+            nextButton.style.display = 'none';
+            while (answerButtons.firstChild) {
+                answerButtons.removeChild(answerButtons.firstChild);
+            }
+        }
+
+        function selectAnswer(index) {
+            const buttons = answerButtons.getElementsByTagName('button');
+            const question = quizData[currentQuestion];
+            
+            // Disable all buttons to prevent multiple selections
+            for (let button of buttons) {
+                button.disabled = true;
+            }
+
+            if (index === question.correct) {
+                buttons[index].classList.add('correct');
+                score++;
+            } else {
+                buttons[index].classList.add('incorrect');
+                buttons[question.correct].classList.add('correct');
+            }
+
+            nextButton.style.display = 'block';
+            nextButton.onclick = () => {
+                currentQuestion++;
+                if (currentQuestion < quizData.length) {
+                    showQuestion();
+                } else {
+                    showResults();
+                }
+            };
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            const progress = ((currentQuestion + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        function showResults() {
+            quizContainer.style.display = 'none';
+            results.style.display = 'block';
+            scoreElement.textContent = score;
+
+            const ctx = document.getElementById('scoreChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Correct', 'Incorrect'],
+                    datasets: [{
+                        data: [score, quizData.length - score],
+                        backgroundColor: ['#2ecc71', '#e74c3c']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        startQuizBtn.addEventListener('click', startQuiz);
+        retakeQuizBtn.addEventListener('click', startQuiz);
+    </script>
+</body>
+</html>
