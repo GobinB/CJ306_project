@@ -6,20 +6,105 @@
     <title>Fourth Amendment & Modern Technology Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
+    <meta name="description" content="Test your knowledge of Fourth Amendment protections in the digital age with our interactive quiz.">
+    <meta property="og:title" content="Fourth Amendment & Modern Technology Quiz">
+    <meta property="og:description" content="Interactive quiz on Fourth Amendment rights and modern technology.">
 </head>
 <body>
     <header>
         <h1>Fourth Amendment & Modern Technology Quiz</h1>
     </header>
+    <div class="warning-banner">
+        <p>⚠️ Warning: This is an educational project for a class assignment. The information presented may not be entirely accurate or up to date. Please consult official legal sources for accurate information about Fourth Amendment rights and technology.</p>
+    </div>
 
     <div class="container">
         <div id="intro">
-            <h2>Test Your Knowledge</h2>
-            <p>This quiz covers the impact of modern technology on Fourth Amendment protections. Are you ready to challenge yourself?</p>
-            <button id="startQuiz" class="btn">Start Quiz</button>
+            <h2>Fourth Amendment & Modern Technology</h2>
+            <p class="intro-text">Explore how modern technology has transformed Fourth Amendment protections in the United States. Begin by reviewing key Supreme Court cases below, then test your knowledge with the comprehensive quiz.</p>
+            
+            <div class="timeline-container">
+                <h3>Key Supreme Court Decisions</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2001</div>
+                        <div class="timeline-content">
+                            <h3>Kyllo v. United States</h3>
+                            <p>Thermal imaging of homes constitutes a search requiring a warrant</p>
+                            <div class="case-details">
+                                <strong>Key Points:</strong>
+                                <ul>
+                                    <li>Use of thermal imaging device to detect heat patterns in home</li>
+                                    <li>Court ruled 5-4 that this constitutes a search under Fourth Amendment</li>
+                                    <li>Established principle that advanced technology can't bypass Fourth Amendment protections</li>
+                                    <li>Impact: Set precedent for protecting privacy against advancing surveillance technology</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2012</div>
+                        <div class="timeline-content">
+                            <h3>United States v. Jones</h3>
+                            <p>GPS tracking device installation constitutes a search</p>
+                            <div class="case-details">
+                                <strong>Key Points:</strong>
+                                <ul>
+                                    <li>28-day GPS surveillance of vehicle without warrant</li>
+                                    <li>Unanimous decision finding Fourth Amendment violation</li>
+                                    <li>Introduced "mosaic theory" of privacy</li>
+                                    <li>Impact: Limited long-term electronic surveillance without warrant</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2014</div>
+                        <div class="timeline-content">
+                            <h3>Riley v. California</h3>
+                            <p>Warrantless cell phone searches incident to arrest are unconstitutional</p>
+                            <div class="case-details">
+                                <strong>Key Points:</strong>
+                                <ul>
+                                    <li>Unanimous decision protecting cell phone privacy</li>
+                                    <li>Distinguished cell phones from other physical items</li>
+                                    <li>Recognized vast amount of personal data on modern phones</li>
+                                    <li>Impact: Major victory for digital privacy rights</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2018</div>
+                        <div class="timeline-content">
+                            <h3>Carpenter v. United States</h3>
+                            <p>Government must obtain warrant for cell-site location information</p>
+                            <div class="case-details">
+                                <strong>Key Points:</strong>
+                                <ul>
+                                    <li>127 days of cell phone location data obtained without warrant</li>
+                                    <li>Modified third-party doctrine for digital age</li>
+                                    <li>Recognized expectation of privacy in physical movements</li>
+                                    <li>Impact: Landmark decision for digital privacy rights</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-intro">
+                <h3>Ready to Test Your Knowledge?</h3>
+                <p>Take the quiz covering the impact of modern technology on Fourth Amendment protections.</p>
+                <button id="startQuiz" class="btn">Start Quiz</button>
+            </div>
         </div>
 
         <div id="quizContainer" style="display:none;">
+            <div class="navigation-buttons">
+                <button id="mainPageBtn" class="nav-btn">Main Page</button>
+                <button id="skipToEndBtn" class="nav-btn">Skip to Results</button>
+            </div>
             <div class="progress-bar">
                 <div class="progress" id="progressBar"></div>
             </div>
@@ -33,8 +118,15 @@
             <h2>Quiz Completed!</h2>
             <p>Your score: <span id="score"></span> out of 25</p>
             <div id="scoreChart"></div>
-            <button id="retakeQuiz" class="btn">Retake Quiz</button>
+            <div class="results-buttons">
+                <button id="retakeQuiz" class="btn">Retake Quiz</button>
+                <button id="resultsMainPageBtn" class="btn">Main Page</button>
+            </div>
         </div>
+    </div>
+
+    <div class="warning-banner">
+        <p>⚠️ Warning: This quiz is for educational purposes only. For accurate legal information, please consult official sources.</p>
     </div>
 
     <footer>
@@ -52,6 +144,9 @@
         const results = document.getElementById('results');
         const scoreElement = document.getElementById('score');
         const retakeQuizBtn = document.getElementById('retakeQuiz');
+        const mainPageBtn = document.getElementById('mainPageBtn');
+        const skipToEndBtn = document.getElementById('skipToEndBtn');
+        const resultsMainPageBtn = document.getElementById('resultsMainPageBtn');
 
         let currentQuestion = 0;
         let score = 0;
@@ -397,10 +492,70 @@
                     maintainAspectRatio: false
                 }
             });
+
+            // Add topic analysis
+            const topicAnalysis = {
+                gps: calculateTopicScore([0, 19, 20]), // Questions about GPS
+                cellData: calculateTopicScore([1, 3, 9]), // Questions about cell data
+                facialRecognition: calculateTopicScore([7, 24, 25]), // Questions about facial recognition
+                privacy: calculateTopicScore([2, 4, 15]) // Questions about privacy doctrine
+            };
+            
+            const analysisHtml = `
+                <div class="topic-analysis">
+                    <h3>Topic Analysis</h3>
+                    <div class="topic-bars">
+                        <div class="topic-bar">
+                            <label>GPS Tracking</label>
+                            <div class="bar" style="width: ${topicAnalysis.gps}%">${topicAnalysis.gps}%</div>
+                        </div>
+                        <div class="topic-bar">
+                            <label>Cell Data</label>
+                            <div class="bar" style="width: ${topicAnalysis.cellData}%">${topicAnalysis.cellData}%</div>
+                        </div>
+                        <div class="topic-bar">
+                            <label>Facial Recognition</label>
+                            <div class="bar" style="width: ${topicAnalysis.facialRecognition}%">${topicAnalysis.facialRecognition}%</div>
+                        </div>
+                        <div class="topic-bar">
+                            <label>Privacy Doctrine</label>
+                            <div class="bar" style="width: ${topicAnalysis.privacy}%">${topicAnalysis.privacy}%</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('results').insertAdjacentHTML('beforeend', analysisHtml);
         }
+
+        function calculateTopicScore(questionIndices) {
+            const topicScore = questionIndices.reduce((acc, qIndex) => {
+                return acc + (userAnswers[qIndex] === quizData[qIndex].correct ? 1 : 0);
+            }, 0);
+            return Math.round((topicScore / questionIndices.length) * 100);
+        }
+
+        mainPageBtn.addEventListener('click', () => {
+            quizContainer.style.display = 'none';
+            document.getElementById('intro').style.display = 'block';
+            results.style.display = 'none';
+            currentQuestion = 0;
+            score = 0;
+        });
+
+        skipToEndBtn.addEventListener('click', () => {
+            currentQuestion = quizData.length - 1;
+            showResults();
+        });
 
         startQuizBtn.addEventListener('click', startQuiz);
         retakeQuizBtn.addEventListener('click', startQuiz);
+        resultsMainPageBtn.addEventListener('click', () => {
+            results.style.display = 'none';
+            document.getElementById('intro').style.display = 'block';
+            currentQuestion = 0;
+            score = 0;
+        });
     </script>
 </body>
 </html>
